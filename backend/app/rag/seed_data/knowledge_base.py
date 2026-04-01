@@ -1,0 +1,400 @@
+"""
+AIS Seed Data — Phase 1 Astrological Knowledge Base
+Comprehensive seed data for all 6 Weaviate collections.
+
+This is loaded on first startup and on the /api/seed endpoint.
+Sources: BPHS, Saravali, Phaladeepika, classical commentaries.
+"""
+from __future__ import annotations
+
+from typing import List, Dict, Any
+
+
+# ─── YOGA DESCRIPTIONS ────────────────────────────────────────────────────────
+
+YOGA_DESCRIPTIONS: List[Dict[str, Any]] = [
+    {
+        "yoga_name": "Hamsa Mahapurusha Yoga",
+        "category": "pancha_mahapurusha",
+        "tradition": "vedic",
+        "formation_rule": "Jupiter in kendra (1st, 4th, 7th, or 10th house) AND in own sign (Sagittarius, Pisces) or exaltation (Cancer). Not combust, not debilitated.",
+        "effect_career": "Exceptional wisdom-based authority. The native rises to positions of great respect — teachers, judges, ministers, spiritual leaders. Career success through knowledge, justice, and benevolence.",
+        "effect_personality": "Just, learned, generous, philosophical, spiritually inclined. The native has an elephant-like gait (historically), a commanding presence, and earns respect through ethical conduct.",
+        "effect_health": "Generally robust constitution, long life promised by classical texts. Jupiter's benefic influence protects health.",
+        "effect_relationships": "Devoted partner, loving family relationships, many willing followers and friends.",
+        "effect_finance": "Comfortable wealth through dharmic means; not excessive greed but sufficiency and generosity.",
+        "source_ref": "BPHS_ch35_v2",
+        "strength_modifier": 0.9,
+        "full_text": "Hamsa Mahapurusha Yoga: Jupiter in kendra in own or exaltation sign. BPHS states: 'The person will have a beautiful body, will be liked by all, religious, pure-minded, endowed with virtues, and will be a king or equal to a king.' The yoga grants wisdom, authority, and lasting fame. It is strongest when Jupiter is in Cancer (exaltation) in the first or fourth house, unaspected by malefics.",
+    },
+    {
+        "yoga_name": "Malavya Mahapurusha Yoga",
+        "category": "pancha_mahapurusha",
+        "tradition": "vedic",
+        "formation_rule": "Venus in kendra AND in own sign (Taurus, Libra) or exaltation (Pisces). Not combust.",
+        "effect_career": "Success in arts, creative fields, luxury industries, diplomacy, fashion, entertainment. Charm brings professional opportunity.",
+        "effect_personality": "Charming, artistic, sensual, harmonious, lover of beauty and comfort. Magnetic personality with natural grace.",
+        "effect_relationships": "Excellent romantic fortune; attractive to partners, passionate, devoted. Often blissful marriages.",
+        "effect_finance": "Wealth through beauty-related industries, art, luxury goods, hospitality.",
+        "source_ref": "BPHS_ch35_v4",
+        "strength_modifier": 0.88,
+        "full_text": "Malavya Yoga: Venus in kendra in own or exaltation sign. BPHS: 'The person will have a well-proportioned body with beautiful eyes, will be learned, wealthy, happy, famous, and will enjoy pleasures.' The yoga is supreme when Venus is in Pisces (exaltation) in the Lagna, granting the full force of Venusian blessings in the physical body and personality.",
+    },
+    {
+        "yoga_name": "Ruchaka Mahapurusha Yoga",
+        "category": "pancha_mahapurusha",
+        "tradition": "vedic",
+        "formation_rule": "Mars in kendra AND in own sign (Aries, Scorpio) or exaltation (Capricorn). Not combust.",
+        "effect_career": "Military excellence, athletic greatness, administrative authority, engineering leadership. The native commands armies or organizations.",
+        "effect_personality": "Courageous, physically powerful, competitive, passionate, commanding. The native leads others through force of will and action.",
+        "effect_health": "Strong physical constitution, high energy, prone to occasional inflammatory conditions in old age.",
+        "source_ref": "BPHS_ch35_v1",
+        "strength_modifier": 0.88,
+        "full_text": "Ruchaka Yoga: Mars in kendra in own or exaltation sign. BPHS: 'The person will have a long face, will be cruel, will have blood-red eyes, will be valorous, wealthy, and will be a king.' The native exhibits Martian excellence — physical courage and executive authority at the highest level. Best expressed when Mars is in Capricorn (exaltation) in the 10th house of career.",
+    },
+    {
+        "yoga_name": "Gaja Kesari Yoga",
+        "category": "misc",
+        "tradition": "vedic",
+        "formation_rule": "Jupiter in kendra (1st, 4th, 7th, 10th) from natal Moon. Jupiter not debilitated, not combust.",
+        "effect_career": "Fame and intellectual recognition. The native achieves prominence like an elephant among crowds. Business and educational leadership.",
+        "effect_personality": "Noble character, elephant-like dignity, prosperous and generous. The native is remembered long after death.",
+        "effect_relationships": "Respected by family and community, many devoted followers.",
+        "source_ref": "BPHS_ch36_gaja_kesari",
+        "strength_modifier": 0.8,
+        "full_text": "Gaja Kesari Yoga: Jupiter in kendra from Moon. Phala Deepika: 'The person will be endowed with intelligence and learning, will have a stout body, will be eloquent, will be famous and virtuous, and will be engaged in righteous deeds.' This yoga is extremely common (Jupiter forms it roughly every 12 years for Moon signs) but its strength varies enormously with Jupiter's dignity and aspect.",
+    },
+    {
+        "yoga_name": "Neecha Bhanga Raja Yoga",
+        "category": "neecha_bhanga",
+        "tradition": "vedic",
+        "formation_rule": "A debilitated planet's debilitation is cancelled when: (a) lord of the sign of debilitation is in kendra from Lagna or Moon; (b) the planet that would be exalted in the same sign is in kendra; (c) the debilitated planet itself is in kendra; (d) the debilitated planet is aspected by its exaltation lord.",
+        "effect_career": "Reversal of apparent weakness to unexpected strength. The native experiences profound setbacks during specific periods, then rises to unusual heights. Character forged through adversity.",
+        "effect_personality": "Inner resilience developed through suffering. The native understands both failure and success from lived experience.",
+        "source_ref": "BPHS_neecha_bhanga",
+        "strength_modifier": 0.85,
+        "full_text": "Neecha Bhanga Raja Yoga: The cancellation of debilitation. Classical texts state this is one of the most powerful raja yogas because it converts apparent weakness into extraordinary strength. BPHS: 'When a debilitated planet is aspected by the lord of its exaltation sign, or when that lord is in a kendra, the debilitation is cancelled and the native becomes a ruler.' Timing is critical — the yoga fully activates during the mahadasha or antardasha of the debilitated planet itself.",
+    },
+    {
+        "yoga_name": "Viparita Raja Yoga — Harsha (6th-8th Lords)",
+        "category": "viparita",
+        "tradition": "vedic",
+        "formation_rule": "Lords of 6th and 8th houses exchange signs, conjunct, or are in each other's houses. Neither lord should be in trikona or kendra to others.",
+        "effect_career": "Career success through overcoming enemies and hidden opponents. Success in competitive fields, research, occult, medicine.",
+        "effect_personality": "Resilient under pressure, able to survive and thrive in difficult circumstances.",
+        "source_ref": "BPHS_ch39_viparita_harsha",
+        "strength_modifier": 0.75,
+        "full_text": "Harsha Viparita Raja Yoga: 6th and 8th lords combined. The native defeats enemies and acquires their wealth. Success comes through confronting obstacles directly. The 6th house represents enemies, debts, disease; the 8th represents death, hidden matters, legacies. When these lords strengthen each other, the native becomes immune to the worst effects of both houses.",
+    },
+]
+
+
+# ─── DASHA EFFECTS ────────────────────────────────────────────────────────────
+
+DASHA_EFFECTS: List[Dict[str, Any]] = [
+    {
+        "mahadasha": "Jupiter",
+        "antardasha": "Jupiter",
+        "general_effect": "The supreme period of wisdom, expansion, and spiritual growth. Jupiter-Jupiter is often the most auspicious period in the native's life when the chart is otherwise supportive.",
+        "career_effect": "Teaching, academia, law, counseling, finance, religion — fields ruled by Jupiter flourish. Management positions, professorial roles, spiritual leadership. Recognition and promotions come naturally.",
+        "health_effect": "Generally excellent health. Jupiter protects the body. Watch for liver-related issues and weight gain.",
+        "relationship_effect": "Marriage is blessed. Children may arrive. Family happiness increases. Trusted by community.",
+        "finance_effect": "Wealth expands through wise investments, inheritance, or professional rise. Financial security established.",
+        "duration_years": 2.67,
+        "source_ref": "BPHS_dasha_jupiter_jupiter",
+        "full_text": "Jupiter Mahadasha — Jupiter Antardasha: The native enters a period of profound expansion in all aspects of life. BPHS: 'One gets enjoyment of kingdom, wealth, happiness, good food, and performs religious rites.' Classical texts call this the 'Guru's own period' — the philosopher-king's season. It is strongest when natal Jupiter has high Shadbala.",
+    },
+    {
+        "mahadasha": "Saturn",
+        "antardasha": "Mercury",
+        "general_effect": "A period of disciplined intellectual labor. Saturn slows and structures; Mercury activates information and communication. Together: precise, methodical thinking applied to complex problems.",
+        "career_effect": "Technical careers advance significantly. Engineering, IT, finance, administration. Paperwork, contracts, communication-heavy work sees productivity. Promotions through demonstrated competence.",
+        "health_effect": "Nervous system can feel strained. Regular sleep schedule essential. Vata-related conditions possible.",
+        "relationship_effect": "Communication in relationships improves but emotional warmth may feel dampened. Business partnerships can be productive.",
+        "finance_effect": "Steady income through labor. No windfall, but consistent accumulation. Good for financial planning.",
+        "duration_years": 2.72,
+        "source_ref": "BPHS_dasha_saturn_mercury",
+        "full_text": "Saturn Mahadasha — Mercury Antardasha: Saturn-Mercury period is often associated with intellectual achievement through sustained effort. The native's work becomes more precise, systematic, and detail-oriented. Communication skills applied to business or technical domains pay dividends. Duration: approximately 2 years 8 months within the 19-year Saturn mahadasha.",
+    },
+    {
+        "mahadasha": "Rahu",
+        "antardasha": "Jupiter",
+        "general_effect": "A paradoxical period — the illusion-maker meets the wisdom-giver. Rahu amplifies ambitious desires while Jupiter tries to inject ethics and wisdom. Can produce great material success or moral crisis.",
+        "career_effect": "Foreign connections, unconventional paths, technology, mass communication benefit. Rapid rise is possible but character is tested.",
+        "health_effect": "Watch for mental overactivation, anxiety, and stress-related conditions.",
+        "relationship_effect": "Unusual or foreign partnerships. Intense attractions. Spiritual teacher or mentor appears.",
+        "finance_effect": "Windfall from unexpected sources possible. Also risk of financial speculation gone wrong.",
+        "duration_years": 2.4,
+        "source_ref": "BPHS_dasha_rahu_jupiter",
+        "full_text": "Rahu Mahadasha — Jupiter Antardasha: Classical astrologers call this the most complex sub-period. Rahu's material ambition meets Jupiter's wisdom. The native either rises to great heights through inspired action, or makes costly errors through overconfidence. The outcome depends heavily on Jupiter's natal strength and house placement.",
+    },
+    {
+        "mahadasha": "Venus",
+        "antardasha": "Saturn",
+        "general_effect": "The pleasure-seeker meets the disciplinarian. Venus desires comfort; Saturn demands duty. The result is often a productive creative discipline — art that works hard, or relationships that mature through commitment.",
+        "career_effect": "Creative industries with disciplined execution. Architecture, design, music. Long-term commitments in career pay off.",
+        "health_effect": "Kidney and urinary health requires attention (Venus rules kidneys; Saturn restricts).",
+        "relationship_effect": "Serious, committed relationships or marrigage consolidation. Older partners. Relationships require sustained effort.",
+        "finance_effect": "Financial gains through persistence in creative or aesthetic endeavors.",
+        "duration_years": 3.17,
+        "source_ref": "BPHS_dasha_venus_saturn",
+        "full_text": "Venus Mahadasha — Saturn Antardasha: Duration approximately 3 years 2 months. This period tests whether the native can balance enjoyment with duty. Saturn in Shukra-dasha brings karmic lessons around relationship responsibility and financial discipline. Favorable for agriculture, construction, artistic businesses with systematic approach.",
+    },
+    {
+        "mahadasha": "Sun",
+        "antardasha": "Moon",
+        "general_effect": "Father and Mother energies combined. The solar ego meets lunar emotion. This period often brings family matters, authority relationships with parents, and emotional clarity about one's public role.",
+        "career_effect": "Government, public service, healthcare, hospitality. Work in front of the public benefits. Leadership through emotional connection.",
+        "health_effect": "Heart and eyes should be monitored (Sun). Emotional fluctuations affect physical health (Moon).",
+        "relationship_effect": "Mother figure and family relationships are highlighted. Emotional bonds with family deepen or are tested.",
+        "finance_effect": "Moderate financial period. Income from government or public-facing work.",
+        "duration_years": 0.5,
+        "source_ref": "BPHS_dasha_sun_moon",
+        "full_text": "Sun Mahadasha — Moon Antardasha: Brief but significant — approximately 6 months. Classical texts emphasize the father-mother polarity activating simultaneously. Health of parents may be a concern. The native's public role and emotional inner world must be reconciled. Both planets are luminaries; this is often a period of high visibility.",
+    },
+]
+
+
+# ─── TRANSIT EFFECTS (Gochara) ───────────────────────────────────────────────
+
+TRANSIT_EFFECTS: List[Dict[str, Any]] = [
+    {
+        "planet": "Jupiter",
+        "house_from_moon": 1,
+        "general_effect": "Jupiter transiting the natal Moon sign (1st from Moon — Janma). This is called Janma Guru or birth Jupiter transit. It brings significant spiritual activation and life changes, though classical texts rate it as moderately auspicious.",
+        "career_effect": "New opportunities appear. Networking and connections established. Teaching or advisory roles offered.",
+        "health_effect": "Physical expansion. Tendency to weight gain. Generally healthy year.",
+        "relationship_effect": "Marriage prospects increase. Children may arrive. Family happiness.",
+        "auspicious": True,
+        "source_ref": "gochara_jupiter_1st_moon",
+        "full_text": "Jupiter transit 1st from Moon (Janma): The Great Benefic passes over the natal Moon position. This is a significant spiritual activation. BPHS gochara: Jupiter in 1st from Moon gives 'obstacles to food and troubles to wife.' However, modern astrologers note the spiritual activation outweighs material difficulties. Ashtakavarga score modifies this significantly.",
+    },
+    {
+        "planet": "Jupiter",
+        "house_from_moon": 5,
+        "general_effect": "Jupiter in the 5th from natal Moon — one of the most auspicious Jupiter transits. Called Pancha-trikona sthana, it activates intelligence, children, creativity, and romance.",
+        "career_effect": "Creative projects prosper. Intellectual recognition. Promotion in knowledge-based fields.",
+        "health_effect": "Excellent health. High energy. Robust constitution for this period.",
+        "relationship_effect": "Romance blossoms. Possibility of pregnancy or birth of children. Creative partnerships.",
+        "auspicious": True,
+        "source_ref": "gochara_jupiter_5th_moon",
+        "full_text": "Jupiter transit 5th from Moon: Classical texts are unanimous — this is highly auspicious. BPHS: 'One gets wealth, happiness, and pleasure.' The 5th house from Moon activates purva punya (meritorious past deeds ripening). Typically a 12–13 month period of creative prosperity and joyful experiences." ,
+    },
+    {
+        "planet": "Jupiter",
+        "house_from_moon": 10,
+        "general_effect": "Jupiter in the 10th from natal Moon — career transit par excellence. The 10th is the house of action, profession, and status. Jupiter here brings recognition and elevation.",
+        "career_effect": "Professional recognition, promotions, awards. Authority increases. Best transit for career advancement once every 12 years.",
+        "health_effect": "Moderate health. Active period.",
+        "relationship_effect": "Professional respect also improves personal standing in family.",
+        "auspicious": True,
+        "source_ref": "gochara_jupiter_10th_moon",
+        "full_text": "Jupiter transit 10th from Moon: The career transit. This is the period when professional ambitions receive divine support. Leaders are recognized, executives are promoted, businesses flourish. Lasts approximately 13 months. Should be used proactively — initiate career moves, apply for positions, launch businesses. Combined with favorable dasha, this is the prime window for life's biggest professional opportunity.",
+    },
+    {
+        "planet": "Saturn",
+        "house_from_moon": 1,
+        "general_effect": "The beginning of Sade Sati — Saturn's 7.5-year transit passing through the 12th, 1st, and 2nd from natal Moon. The 1st phase (12th) prepares, the 2nd phase (1st) is the most direct, and the 3rd phase (2nd) resolves.",
+        "career_effect": "Career requires sustained effort without clear recognition. Patience and discipline are the tools. Do not expect quick promotion.",
+        "health_effect": "Physical and mental fatigue may increase. Sleep disturbances. Be proactive with health maintenance.",
+        "relationship_effect": "Relationships tested. Responsibility increases. Some separations from close ones.",
+        "auspicious": False,
+        "source_ref": "gochara_saturn_1st_moon_sade_sati",
+        "full_text": "Saturn Sade Sati (1st phase — 12th from Moon): After Saturn leaves the 12th, it arrives at the natal Moon — the most intensive Sade Sati phase. This is not a time of punishment but of karmic accounting. Debts (material and karmic) are called in. Hard work brings delayed rewards. The native learns that authentic achievement requires patience. Many transformative life events occur because Saturn dismantles what no longer serves.",
+    },
+    {
+        "planet": "Saturn",
+        "house_from_moon": 10,
+        "general_effect": "Saturn in the 10th from natal Moon — a period of maximum professional labor. Hard work pays off eventually but demands extreme effort, humility, and perseverance.",
+        "career_effect": "Career trials and tribulations, but if work is genuine and ethical, this transit produces lasting professional achievement. Promotions come through proven competence, not luck.",
+        "health_effect": "Physical stamina tested. Back and joint health should be monitored.",
+        "relationship_effect": "Professional demands may strain domestic relationships.",
+        "auspicious": True,
+        "source_ref": "gochara_saturn_10th_moon",
+        "full_text": "Saturn transit 10th from Moon: Shani in Karma Bhava (house of action). This is called a difficult but ultimately rewarding transit. The native's career is put to the maximum test. If they pass — through hard work, discipline, and ethical action — they receive Saturn's gift of enduring professional legacy. Many successful people attribute their breakthrough to this transit period.",
+    },
+    {
+        "planet": "Rahu",
+        "house_from_moon": 1,
+        "general_effect": "Rahu (North Node) transiting natal Moon sign. Intense mental restlessness, foreign travel desires, unconventional lifestyle changes. Often a period of obsessive ambition.",
+        "career_effect": "Desire for career in foreign lands or unconventional fields. Technology, media, modern industries pull strongly.",
+        "health_effect": "Mental health requires attention. Anxiety, sleep disruption. Meditation recommended.",
+        "relationship_effect": "Unusual relationships, attractions to foreigners or unconventional partners.",
+        "auspicious": False,
+        "source_ref": "gochara_rahu_1st_moon",
+        "full_text": "Rahu transit Moon sign (Janma Rahu): This 18-month period is one of the most psychologically intense transits. Rahu obsessively amplifies whatever the Moon represents — emotions, mother, homeland, comfort. The native may feel pulled toward alien experiences that ultimately prove transformative. This transit often coincides with significant moves, career pivots, or radical lifestyle changes.",
+    },
+]
+
+
+# ─── PLANET SIGNIFICATIONS ────────────────────────────────────────────────────
+
+PLANET_SIGNIFICATIONS: List[Dict[str, Any]] = [
+    {
+        "planet": "Jupiter",
+        "sign": "Cancer",
+        "dignity": "exalted",
+        "significations": ["wisdom", "expansion", "abundance", "teaching", "spirituality", "dharma", "children"],
+        "career_domains": ["education", "law", "religion", "finance", "counseling", "academia", "management"],
+        "health_domains": ["liver", "fat", "hips", "immune-system"],
+        "relationship_quality": "Generous, devoted, philosophical partner. Seeks wisdom and growth in relationships.",
+        "tradition": "vedic",
+        "full_text": "Jupiter (Guru/Brihaspati) in Cancer — exaltation. Jupiter reaches maximum strength in Cancer, the sign of the Moon. Classical texts state Jupiter in Cancer is like a king in his royal palace. The native with exalted Jupiter possesses enormous wisdom, compassion, and the capacity to guide others. Career in law, education, medicine, or religious leadership is indicated. The creative intelligence (5th house karaka) and dharmic life path (9th house karaka) both benefit enormously.",
+    },
+    {
+        "planet": "Saturn",
+        "sign": "Libra",
+        "dignity": "exalted",
+        "significations": ["discipline", "patience", "structure", "karma", "time", "service", "masses", "justice"],
+        "career_domains": ["administration", "engineering", "law", "architecture", "agriculture", "mining", "social-work"],
+        "health_domains": ["bones", "joints", "teeth", "skin", "nervous-system"],
+        "relationship_quality": "Serious, committed, loyal but emotionally reserved. Relationships built through shared duty.",
+        "tradition": "vedic",
+        "full_text": "Saturn (Shani) in Libra — exaltation. Libra is the sign of justice and balance, and Saturn as the planet of karma finds perfect expression here. The native has exceptional patience, organizational ability, and the capacity to build lasting structures. Career success is slow but supremely durable — Saturn rewards consistent effort over decades. The native may serve in positions of public administration, judiciary, or large-scale engineering.",
+    },
+    {
+        "planet": "Mars",
+        "sign": "Aries",
+        "dignity": "own",
+        "significations": ["courage", "action", "energy", "competition", "will", "initiative", "leadership"],
+        "career_domains": ["military", "sports", "surgery", "engineering", "entrepreneurship", "firefighting", "police"],
+        "health_domains": ["blood", "muscles", "head", "inflammation"],
+        "relationship_quality": "Passionate, direct, sometimes impulsive. Devoted once committed.",
+        "tradition": "vedic",
+        "full_text": "Mars (Mangal/Kuja) in Aries — own sign. Mars at full Martian strength — the soldier in his home territory. The native possesses courage, initiative, and powerful will. Career success comes through bold action and leadership. Physical fitness and athletic ability are enhanced. The native is attracted to competitive environments and thrives under pressure.",
+    },
+    {
+        "planet": "Venus",
+        "sign": "Pisces",
+        "dignity": "exalted",
+        "significations": ["beauty", "love", "art", "pleasure", "harmony", "luxury", "creativity", "relationships"],
+        "career_domains": ["art", "music", "fashion", "hospitality", "entertainment", "beauty-industry", "diplomacy"],
+        "health_domains": ["kidneys", "reproductive-system", "throat", "skin"],
+        "relationship_quality": "Supremely romantic, devoted, spiritually inclined in love. Seeks soulmate connection.",
+        "tradition": "vedic",
+        "full_text": "Venus (Shukra) in Pisces — exaltation. Venus in Pisces is the divine lover — romantic to the point of transcendence. The native's artistic sensitivity reaches its peak; creative works carry spiritual depth. Relationships are idealized and mystical. Financial gains through beauty and art industries. The native may experience profound love relationships (and their corresponding heartbreaks) as spiritually transformative events.",
+    },
+    {
+        "planet": "Moon",
+        "sign": "Taurus",
+        "dignity": "exalted",
+        "significations": ["emotions", "mind", "mother", "home", "comfort", "intuition", "public", "food"],
+        "career_domains": ["nursing", "catering", "real-estate", "hospitality", "agriculture", "child-care", "public-service"],
+        "health_domains": ["chest", "stomach", "digestion", "mind", "uterus"],
+        "relationship_quality": "Deeply nurturing, emotionally consistent, devoted to family. Creates warm domestic environment.",
+        "tradition": "vedic",
+        "full_text": "Moon (Chandra) in Taurus — exaltation at 3° Taurus. The Moon in the Venus-ruled sign of sensory pleasure finds maximum comfort and stability here. The native has a calm, centered emotional nature, strong intuition, and a powerful capacity for nurturing. Memory is excellent. Artistic appreciation is refined. Career in public-facing, caring, or food-related industries often suits. The native's mother is typically stable, prosperous, and influential.",
+    },
+]
+
+
+# ─── HOUSE LORD EFFECTS ───────────────────────────────────────────────────────
+
+HOUSE_LORD_EFFECTS: List[Dict[str, Any]] = [
+    {
+        "lord_of_house": 1,
+        "placed_in_house": 10,
+        "effect_summary": "Lagna lord in 10th: The self is expressed through career. Strong professional identity. The native's life purpose is actualized through vocation.",
+        "career_effect": "Extraordinary career drive. The native identifies deeply with their professional role. Leadership positions natural. Authority and recognition come through personal effort.",
+        "health_effect": "Good overall vitality, as the Lagna lord (body ruler) is in a powerful kendra.",
+        "relationship_effect": "Work may dominate personal life. Balance required between career ambition and domestic happiness.",
+        "tradition": "vedic",
+        "source_ref": "BPHS_houselor_1_10",
+        "full_text": "1st lord in 10th house: Saravali states 'The person will be endowed with wealth, be famous, be a leader of an army, be learned, be virtuous, will be honored by the king.' The Lagna lord (self) merges with the 10th house (career, status). The native's existential identity is inseparable from professional role. This is the classic CEO, politician, or celebrated artist placement.",
+    },
+    {
+        "lord_of_house": 9,
+        "placed_in_house": 10,
+        "effect_summary": "9th lord in 10th: Dharma meeting Karma. Fortune and luck applied directly to career. The native rises through both talent and divine grace.",
+        "career_effect": "Exceptional career luck. Promotions arrive without extreme effort. Foreign connections benefit work. Ethical conduct directly improves career success.",
+        "health_effect": "Generally healthy when following dharmic path.",
+        "relationship_effect": "Respected by family for professional achievements. May travel for work.",
+        "tradition": "vedic",
+        "source_ref": "BPHS_houselord_9_10",
+        "full_text": "9th lord in 10th: This is one of the most auspicious placements for career. The 9th house represents fortune, dharma, and the divine grace of the guru. When its lord goes into the 10th house of profession, it brings bhagya (fortune) directly into the career domain. BPHS: 'If the 9th lord is in the 10th house, the person will be wealthy, blessed with sons, devoted to father, and famous.' Father may be a professional influence.",
+    },
+    {
+        "lord_of_house": 7,
+        "placed_in_house": 2,
+        "effect_summary": "7th lord in 2nd: Spouse or partner brings wealth. Business partnerships are financially productive. Family wealth increased through marriage.",
+        "career_effect": "Business partnerships are the key to financial success. Trading, import-export, public-facing businesses benefit.",
+        "health_effect": "Watch mouth and throat (2nd house) health.",
+        "relationship_effect": "Marriage brings material benefit and family expansion. Spouse is likely from a wealthy or well-established family.",
+        "tradition": "vedic",
+        "source_ref": "BPHS_houselord_7_2",
+        "full_text": "7th lord in 2nd house: The partner (7th) directly contributes to the native's wealth and family (2nd). This is a classic indicator of 'marrying well.' However, it also indicates the native's income is tied to partnership activities — trading, consulting, or joint ventures. The native's speech (2nd house) may be influenced by partner's cultural background.",
+    },
+    {
+        "lord_of_house": 5,
+        "placed_in_house": 1,
+        "effect_summary": "5th lord in Lagna: Creativity, intelligence, and speculation manifest through physical self-expression. Highly intelligent, creative individual.",
+        "career_effect": "Creative professions, education, counseling, speculation (if other factors support). Natural teacher or performer.",
+        "health_effect": "Good general health. Watch stomach area (5th house, pitta).",
+        "relationship_effect": "Romantic and devoted. Children are sources of joy and personal pride.",
+        "tradition": "vedic",
+        "source_ref": "BPHS_houselord_5_1",
+        "full_text": "5th lord in 1st house: The house of intelligence and creativity (5th) sends its lord to the lagna — the native embodies creativity. BPHS: 'The person will be learned, intelligent, will have children, and will be blessed with all things.' The native naturally gravitates toward self-expression, education, and speculative ventures. This placement often correlates with prodigies, professors, and creative artists.",
+    },
+    {
+        "lord_of_house": 8,
+        "placed_in_house": 12,
+        "effect_summary": "8th lord in 12th: The classic moksha placement. A subtle, spiritual life. Foreign residence possible. Spiritual progress through surrender.",
+        "career_effect": "Research, occult sciences, foreign work, meditation centers, hospitals — less conventional career paths.",
+        "health_effect": "Hidden health issues require attention. Regular medical checkups needed.",
+        "relationship_effect": "Solitude may be preferred at times. Deep, transformative intimate bonds.",
+        "tradition": "vedic",
+        "source_ref": "BPHS_houselord_8_12",
+        "full_text": "8th lord in 12th house: The house of death and transformation (8th) combined with the house of liberation and loss (12th). This is a powerful spiritual indicator in Vedic astrology. The native may be attracted to mysticism, occult, meditation, or foreign spiritual traditions. Material life may not be paramount; inner transformation is the domain. There may be expenses related to hidden or foreign matters.",
+    },
+]
+
+
+HISTORICAL_CHART_EXAMPLES: List[Dict[str, Any]] = [
+    {
+        "person_name": "Swami Vivekananda",
+        "field": "spiritual leadership",
+        "lagna": "Sagittarius",
+        "moon_sign": "Virgo",
+        "notable_yogas": ["Raja Yoga", "Dharma-Karma link"],
+        "career_outcome": "Global spiritual influence, teaching, institution building",
+        "life_summary": "Remembered for philosophical clarity, disciplined mission, and powerful public impact.",
+        "tradition": "vedic",
+        "source": "historical_reference_vivekananda",
+        "full_text": "Historical chart example: Swami Vivekananda is often cited in traditional astrology discussions for a chart associated with spiritual authority, public teaching, and mission-driven travel. This example is useful when comparing strong dharma-karma combinations, disciplined Jupiterian themes, and destiny linked to public guidance.",
+    },
+    {
+        "person_name": "A. P. J. Abdul Kalam",
+        "field": "science and public service",
+        "lagna": "Cancer",
+        "moon_sign": "Virgo",
+        "notable_yogas": ["Raja Yoga", "Budha-Aditya Yoga"],
+        "career_outcome": "Scientific achievement, national leadership, educational legacy",
+        "life_summary": "Illustrates how intellect, discipline, and service-oriented planetary combinations can mature into public honor.",
+        "tradition": "vedic",
+        "source": "historical_reference_kalam",
+        "full_text": "Historical chart example: A. P. J. Abdul Kalam is frequently referenced for disciplined Mercury-Sun intelligence, technical excellence, service, and eventual national stature. The comparison helps contextualize charts that blend analytical brilliance, humble public conduct, and long-cycle achievement.",
+    },
+    {
+        "person_name": "M. S. Subbulakshmi",
+        "field": "music and arts",
+        "lagna": "Leo",
+        "moon_sign": "Pisces",
+        "notable_yogas": ["Malavya themes", "Lakshmi-supportive combinations"],
+        "career_outcome": "Enduring artistic fame and devotional cultural influence",
+        "life_summary": "Useful reference for Venusian refinement, devotional expression, and public grace through art.",
+        "tradition": "vedic",
+        "source": "historical_reference_subbulakshmi",
+        "full_text": "Historical chart example: M. S. Subbulakshmi is often cited when discussing refined Venusian artistry, devotional expression, public honor, and a life where talent and grace mature into cultural legacy. It offers comparison value for music, performance, and spiritually inflected fame.",
+    },
+]
+
+
+# Index for seeder
+ALL_SEED_DATA = {
+    "YogaDescription": YOGA_DESCRIPTIONS,
+    "DashaEffect": DASHA_EFFECTS,
+    "TransitEffect": TRANSIT_EFFECTS,
+    "PlanetSignification": PLANET_SIGNIFICATIONS,
+    "HouseLordEffect": HOUSE_LORD_EFFECTS,
+    "HistoricalChartExample": HISTORICAL_CHART_EXAMPLES,
+}

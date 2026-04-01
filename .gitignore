@@ -1,0 +1,39 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python caches and environments
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+backend/.venv/
+
+# Local configuration and secrets
+.env
+*.env
+!.env.example
+backend/.env
+
+# Runtime and generated logs
+*.log
+backend/uvicorn.log
+backend/uvicorn.err.log
+backend/uvicorn.out.log
+
+# Frontend / package manager caches
+node_modules/
+.pnpm-store/
+
+# Build artifacts
+dist/
+build/
+coverage/

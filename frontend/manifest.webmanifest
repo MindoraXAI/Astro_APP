@@ -1,0 +1,19 @@
+{
+  "name": "ASL Personal Reading",
+  "short_name": "ASL",
+  "description": "A mobile-ready personal astrology reading app with plain-language insights and follow-up chat.",
+  "start_url": "/app/?source=pwa",
+  "scope": "/app/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#090611",
+  "theme_color": "#090611",
+  "icons": [
+    {
+      "src": "/app/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

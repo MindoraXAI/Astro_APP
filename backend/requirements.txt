@@ -1,0 +1,60 @@
+# Core API
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+httpx>=0.27.0
+
+# Data validation
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+
+# Astronomy & Ephemeris
+pyswisseph>=2.10.3.2
+ephem>=4.1.5           # Cross-validation and backup
+
+# AI / LLM Orchestration
+langchain>=0.3.0
+langchain-community>=0.3.0
+langgraph>=0.2.0
+langchain-ollama>=0.2.0
+openai>=1.30.0          # NVIDIA NIM uses OpenAI-compatible client
+
+# Vector DB
+weaviate-client>=4.7.0
+
+# Database
+sqlalchemy[asyncio]>=2.0.30
+asyncpg>=0.29.0
+alembic>=1.13.0
+
+# Caching
+redis[hiredis]>=5.0.4
+
+# ML & Data Science
+numpy>=1.26.0
+pandas>=2.2.0
+scikit-learn>=1.5.0
+xgboost>=2.1.0
+scipy>=1.13.0
+
+# Data Curation (NeMo Curator — CPU mode, no GPU required for text)
+nemo-curator[text]>=0.5.0
+
+# Text Processing
+beautifulsoup4>=4.12.0
+lxml>=5.2.0
+requests>=2.31.0
+tqdm>=4.66.0
+chardet>=5.2.0
+
+# Testing
+pytest>=8.2.0
+pytest-asyncio>=0.23.0
+httpx>=0.27.0
+
+# Utilities
+python-dotenv>=1.0.0
+loguru>=0.7.2
+pytz>=2024.1
+timezonefinder>=6.5.0
+geopy>=2.4.1

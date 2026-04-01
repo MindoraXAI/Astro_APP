@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="ASL is a personal astrology reading app with a calm, plain-language reading and follow-up chart chat."
+    />
+    <base href="/app/" />
+    <title>ASL Personal Reading</title>
+    <meta name="theme-color" content="#090611" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ASL" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scene-shell" aria-hidden="true">
+      <canvas id="constellation-canvas"></canvas>
+      <div class="scene-vignette"></div>
+    </div>
+
+    <main id="app-shell" class="app-shell mode-intake">
+      <section id="intake-screen" class="screen intake-screen is-active">
+        <div class="intake-column">
+          <p class="eyebrow">ASL / Personal Reading</p>
+          <h1 id="intake-title" data-pretext>Enter your details and step into a calmer, clearer reading.</h1>
+          <p class="support-copy">
+            No complicated chart language. Just your personality, past patterns, present phase, and what may be opening next.
+          </p>
+
+          <form id="reading-form" class="intake-form">
+            <label>
+              Full Name
+              <input name="full_name" type="text" placeholder="Aarav Sharma" required />
+            </label>
+
+            <div class="field-row">
+              <label>
+                Date of Birth
+                <input name="date" type="date" required />
+              </label>
+              <label>
+                Time of Birth
+                <input name="time" type="time" step="1" required />
+              </label>
+            </div>
+
+            <label>
+              Birth Place
+              <input name="birth_place" type="text" placeholder="New Delhi, India" required />
+            </label>
+
+            <label>
+              What do you want to understand most? <span class="optional-tag">Optional</span>
+              <textarea
+                name="query"
+                rows="4"
+                placeholder="Love, career, future direction, emotional patterns, family, money, or a full life reading."
+              ></textarea>
+            </label>
+
+            <button class="primary-button" type="submit">Open My Reading</button>
+            <button id="install-app-button" class="ghost-button hidden-block" type="button">Install App</button>
+            <p id="form-status" class="status-text" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="result-screen" class="screen result-screen" aria-hidden="true">
+        <div class="result-topbar">
+          <button id="new-reading-button" class="ghost-button" type="button">New Reading</button>
+          <p class="eyebrow">ASL / Personal Reading</p>
+        </div>
+
+        <header class="result-hero reveal">
+          <p class="result-kicker">A personal overview</p>
+          <h1 id="reading-title" data-pretext>Your reading</h1>
+          <p id="reading-intro" class="result-intro"></p>
+        </header>
+
+        <section class="reading-grid">
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Personality Traits</p>
+              <h2 data-pretext>How you naturally move through life</h2>
+            </div>
+            <div id="traits-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Emotional Nature</p>
+              <h2 data-pretext>What your inner world tends to need</h2>
+            </div>
+            <div id="emotions-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Relationships</p>
+              <h2 data-pretext>How love and connection usually unfold</h2>
+            </div>
+            <div id="relationships-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Career And Money</p>
+              <h2 data-pretext>Where work and stability tend to grow</h2>
+            </div>
+            <div id="career-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Your Past</p>
+              <h2 data-pretext>Patterns that likely shaped you</h2>
+            </div>
+            <div id="past-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Your Present Phase</p>
+              <h2 data-pretext>What life is asking from you now</h2>
+            </div>
+            <div id="present-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">What Is Ahead</p>
+              <h2 data-pretext>Where your energy seems to be going</h2>
+            </div>
+            <div id="future-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Strengths To Use</p>
+              <h2 data-pretext>What already works in your favor</h2>
+            </div>
+            <div id="strengths-list" class="reading-list"></div>
+          </article>
+
+          <article class="reading-card reveal">
+            <div class="card-heading">
+              <p class="eyebrow">Things To Watch</p>
+              <h2 data-pretext>Where better pacing will help most</h2>
+            </div>
+            <div id="watch-list" class="reading-list"></div>
+          </article>
+        </section>
+
+        <section class="spotlight-card reveal">
+          <div class="card-heading">
+            <p class="eyebrow">Life Highlights</p>
+            <h2 data-pretext>The big threads worth remembering</h2>
+          </div>
+          <div id="highlights-list" class="highlight-grid"></div>
+        </section>
+
+        <section class="chat-shell reveal">
+          <div class="card-heading">
+            <p class="eyebrow">Ask More</p>
+            <h2 data-pretext>Go deeper if something stood out</h2>
+          </div>
+
+          <div id="chat-starters" class="starter-grid"></div>
+
+          <form id="chat-form" class="chat-form">
+            <label>
+              Ask a follow-up question
+              <textarea
+                id="follow-up-query"
+                rows="3"
+                placeholder="Ask about love, future direction, emotional patterns, or anything else from your reading."
+                required
+              ></textarea>
+            </label>
+            <button class="secondary-button" type="submit">Ask More</button>
+            <p id="chat-status" class="status-text" aria-live="polite"></p>
+          </form>
+
+          <section id="chat-thread-section" class="chat-thread-section hidden-block">
+            <div class="card-heading">
+              <p class="eyebrow">Chat Answers</p>
+              <h2 data-pretext>Your conversation with ASL</h2>
+            </div>
+            <div id="chat-thread" class="chat-thread"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="main.js" type="module"></script>
+  </body>
+</html>
