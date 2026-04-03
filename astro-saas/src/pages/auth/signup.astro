@@ -1,0 +1,23 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Sign Up | Astro Vedic SaaS">
+  <main class="mx-auto max-w-md px-6 py-16 space-y-5">
+    <h1 class="text-3xl font-semibold">Sign Up Disabled (Temporary)</h1>
+    <p class="text-[var(--text)]/80">
+      Authentication is temporarily bypassed for local demo mode. Continue directly to the app.
+    </p>
+    <button id="continue" class="rounded-md bg-[var(--primary)] px-4 py-2 font-semibold text-black" type="button">
+      Continue to App
+    </button>
+  </main>
+</Layout>
+
+<script is:inline>
+  const continueButton = document.getElementById("continue");
+  continueButton?.addEventListener("click", () => {
+    window.localStorage.setItem("astro_access_token", "dev-bypass-token");
+    window.location.href = "/app";
+  });
+</script>

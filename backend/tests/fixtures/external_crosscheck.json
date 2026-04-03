@@ -1,0 +1,62 @@
+[
+  {
+    "id": "delhi_1990",
+    "source_tool": "AstroSage",
+    "manual_verified": false,
+    "input": {
+      "date": "1990-01-15",
+      "time": "06:30:00",
+      "timezone": "Asia/Kolkata",
+      "latitude": 28.6139,
+      "longitude": 77.209
+    },
+    "expected": {
+      "lagna": "Sagittarius",
+      "moon_sign": "Leo",
+      "sun_sign": "Capricorn",
+      "moon_nakshatra": "Purva Phalguni",
+      "moon_nakshatra_pada": 2,
+      "current_mahadasha": "Rahu"
+    }
+  },
+  {
+    "id": "nyc_1984",
+    "source_tool": "Jagannatha Hora",
+    "manual_verified": false,
+    "input": {
+      "date": "1984-06-28",
+      "time": "19:30:00",
+      "timezone": "America/New_York",
+      "latitude": 40.7128,
+      "longitude": -74.006
+    },
+    "expected": {
+      "lagna": "Sagittarius",
+      "moon_sign": "Gemini",
+      "sun_sign": "Gemini",
+      "moon_nakshatra": "Ardra",
+      "moon_nakshatra_pada": 2,
+      "current_mahadasha": "Saturn"
+    }
+  },
+  {
+    "id": "london_1995",
+    "source_tool": "AstroSage",
+    "manual_verified": false,
+    "input": {
+      "date": "1995-12-05",
+      "time": "14:20:00",
+      "timezone": "Europe/London",
+      "latitude": 51.5074,
+      "longitude": -0.1278
+    },
+    "expected": {
+      "lagna": "Aries",
+      "moon_sign": "Taurus",
+      "sun_sign": "Scorpio",
+      "moon_nakshatra": "Krittika",
+      "moon_nakshatra_pada": 2,
+      "current_mahadasha": "Rahu"
+    }
+  }
+]

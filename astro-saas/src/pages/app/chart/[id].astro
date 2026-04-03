@@ -1,0 +1,177 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+
+const { id } = Astro.params;
+---
+
+<Layout title="Chart | Astro Vedic SaaS">
+  <main class="mx-auto max-w-6xl px-6 py-12 space-y-6">
+    <section class="rounded-2xl border border-[var(--primary)]/40 bg-[var(--surface)] p-6">
+      <p class="text-xs uppercase tracking-[0.2em] text-[var(--primary)]">Detailed Astro Report</p>
+      <h1 id="name" class="mt-2 text-3xl font-semibold">Loading profile...</h1>
+      <p id="status" class="mt-2 text-[var(--text)]/80">Loading chart...</p>
+      <div id="badges" class="mt-4 flex flex-wrap gap-2"></div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-3">
+      <article class="rounded-xl border border-white/10 bg-[var(--surface)] p-4">
+        <h2 class="text-sm uppercase tracking-[0.08em] text-[var(--muted)]">Core Traits</h2>
+        <ul id="traits" class="mt-3 space-y-2 text-sm"></ul>
+      </article>
+      <article class="rounded-xl border border-white/10 bg-[var(--surface)] p-4">
+        <h2 class="text-sm uppercase tracking-[0.08em] text-[var(--muted)]">Strengths</h2>
+        <ul id="strengths" class="mt-3 space-y-2 text-sm"></ul>
+      </article>
+      <article class="rounded-xl border border-white/10 bg-[var(--surface)] p-4">
+        <h2 class="text-sm uppercase tracking-[0.08em] text-[var(--muted)]">Watchouts</h2>
+        <ul id="watchouts" class="mt-3 space-y-2 text-sm"></ul>
+      </article>
+    </section>
+
+    <section class="rounded-xl border border-white/10 bg-[var(--surface)] p-5">
+      <h2 class="text-xl font-medium">Predictions & Guidance</h2>
+      <ul id="predictions" class="mt-3 space-y-2 text-sm"></ul>
+      <pre id="reading" class="mt-4 whitespace-pre-wrap text-sm text-[var(--text)]/90"></pre>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-2">
+      <article class="rounded-xl border border-white/10 bg-[var(--surface)] p-5">
+        <h2 class="text-xl font-medium">Planet Placements</h2>
+        <div id="planets" class="mt-3 grid gap-2 text-sm"></div>
+      </article>
+      <article class="rounded-xl border border-white/10 bg-[var(--surface)] p-5">
+        <h2 class="text-xl font-medium">Yogas & Dasha</h2>
+        <div id="yogas" class="mt-3 flex flex-wrap gap-2"></div>
+        <div id="dashas" class="mt-4 space-y-2 text-sm"></div>
+      </article>
+    </section>
+
+    <a class="inline-block rounded-md bg-[var(--primary)] px-4 py-2 font-semibold text-black" href={`/app/chat/${id}`}>Open AstroBot Chat</a>
+  </main>
+</Layout>
+
+<script is:inline>
+  const chartId = window.location.pathname.split("/").pop();
+  const token = window.localStorage.getItem("astro_access_token");
+  const statusNode = document.getElementById("status");
+  const nameNode = document.getElementById("name");
+  const badgesNode = document.getElementById("badges");
+  const traitsNode = document.getElementById("traits");
+  const strengthsNode = document.getElementById("strengths");
+  const watchoutsNode = document.getElementById("watchouts");
+  const predictionsNode = document.getElementById("predictions");
+  const planetsNode = document.getElementById("planets");
+  const yogasNode = document.getElementById("yogas");
+  const dashasNode = document.getElementById("dashas");
+  const readingNode = document.getElementById("reading");
+
+  function addList(node, items) {
+    node.innerHTML = (items || [])
+      .map((item) => `<li class="rounded-md border border-white/10 bg-black/20 px-3 py-2">${item}</li>`)
+      .join("");
+  }
+
+  function deriveSections(chart) {
+    const lagna = chart?.lagna ?? "Unknown";
+    const moon = chart?.moon_sign ?? "Unknown";
+    const mahadasha = chart?.current_dasha?.mahadasha ?? "Unknown";
+    const yogas = (chart?.active_yogas ?? []).map((y) => y.name);
+    return {
+      traits: [
+        `You carry a ${lagna} ascendant personality pattern with a steady external approach.`,
+        `Your emotional style is guided by ${moon}, so recognition and emotional warmth matter.`,
+        `You perform best when goals are long-term and structured.`,
+      ],
+      strengths: [
+        `Active period support through ${mahadasha} Mahadasha.`,
+        yogas[0] ? `Chart shows supportive combination: ${yogas[0]}.` : "Balanced chart with growth potential.",
+        "Strong personal will to recover from setbacks and improve.",
+      ],
+      watchouts: [
+        "Avoid impulsive reactions during emotional highs.",
+        "Keep discipline around routine, sleep, and consistency.",
+        "Do not overcommit; focus on one major growth path at a time.",
+      ],
+      predictions: [
+        `Current phase under ${mahadasha} favors sustained effort over quick outcomes.`,
+        "Career and financial growth improve through skill depth and visible execution.",
+        "Personal relationships improve with direct communication and emotional steadiness.",
+      ],
+    };
+  }
+
+  const headers = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  fetch(`/api/charts/${chartId}`, {
+      headers,
+    })
+      .then(async (res) => {
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "Failed to fetch chart.");
+        const chart = json.chart.raw_calculation ?? {};
+        nameNode.textContent = `${json.chart.full_name ?? "Profile"} - Vedic Report`;
+        statusNode.textContent = "Chart loaded.";
+        readingNode.textContent = json.chart.ai_reading?.text ?? "No reading saved yet.";
+        badgesNode.innerHTML = `
+          <span class="rounded-full border border-[var(--primary)]/40 px-3 py-1 text-xs">Lagna: ${chart?.lagna ?? "-"}</span>
+          <span class="rounded-full border border-[var(--secondary)]/40 px-3 py-1 text-xs">Moon: ${chart?.moon_sign ?? "-"}</span>
+          <span class="rounded-full border border-white/20 px-3 py-1 text-xs">Sun: ${chart?.sun_sign ?? "-"}</span>
+          <span class="rounded-full border border-white/20 px-3 py-1 text-xs">Mahadasha: ${chart?.current_dasha?.mahadasha ?? "-"}</span>
+        `;
+
+        const sections = deriveSections(chart);
+        addList(traitsNode, sections.traits);
+        addList(strengthsNode, sections.strengths);
+        addList(watchoutsNode, sections.watchouts);
+        addList(predictionsNode, sections.predictions);
+
+        const planets = Object.values(chart?.planets ?? {});
+        planetsNode.innerHTML = planets
+          .map(
+            (p) => `
+              <article class="rounded-md border border-white/10 bg-black/20 px-3 py-2">
+                <p class="font-medium">${p.name}</p>
+                <p class="text-xs text-[var(--text)]/70">${p.sign} • House ${p.house} • ${Number(p.degree_in_sign ?? 0).toFixed(2)} deg</p>
+                <p class="text-xs text-[var(--text)]/70">${p.nakshatra} (Pada ${p.nakshatra_pada})</p>
+              </article>
+            `,
+          )
+          .join("");
+
+        const yogas = chart?.active_yogas ?? [];
+        yogasNode.innerHTML = yogas.length
+          ? yogas
+              .slice(0, 12)
+              .map(
+                (y) =>
+                  `<span class="rounded-full border border-[var(--primary)]/35 px-3 py-1 text-xs">${y.name}</span>`,
+              )
+              .join("")
+          : `<span class="text-sm text-[var(--text)]/70">No major yoga flags detected in current rule-set.</span>`;
+
+        const current = chart?.current_dasha;
+        const next = chart?.next_dashas ?? [];
+        dashasNode.innerHTML = `
+          <article class="rounded-md border border-white/10 bg-black/20 px-3 py-2">
+            <p class="font-medium">Current: ${current?.mahadasha ?? "-"} / ${current?.antardasha ?? "-"}</p>
+            <p class="text-xs text-[var(--text)]/70">${current?.start_date ?? "-"} to ${current?.end_date ?? "-"}</p>
+          </article>
+          ${next
+            .slice(0, 3)
+            .map(
+              (d) => `
+                <article class="rounded-md border border-white/10 bg-black/20 px-3 py-2">
+                  <p class="font-medium">Next: ${d.mahadasha} / ${d.antardasha}</p>
+                  <p class="text-xs text-[var(--text)]/70">${d.start_date} to ${d.end_date}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        `;
+      })
+      .catch((err) => {
+        statusNode.textContent = err instanceof Error ? err.message : "Unexpected error.";
+      });
+</script>

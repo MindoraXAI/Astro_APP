@@ -1,0 +1,152 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+
+const { id } = Astro.params;
+---
+
+<Layout title="Chat | Astro Vedic SaaS">
+  <main class="mx-auto max-w-3xl px-6 py-16 space-y-5">
+    <h1 class="text-3xl font-semibold">Chat for Chart {id}</h1>
+    <p id="status" class="text-[var(--text)]/80">Loading chart context...</p>
+
+    <div id="thread" class="space-y-3 rounded-xl border border-white/10 bg-[var(--surface)] p-5"></div>
+
+    <form id="chat-form" class="space-y-3">
+      <textarea
+        id="message"
+        class="h-28 w-full rounded-md border border-white/15 bg-black/20 px-3 py-2"
+        placeholder="Ask anything about your chart..."
+      ></textarea>
+      <button
+        id="sendButton"
+        class="rounded-md bg-[var(--primary)] px-4 py-2 font-semibold text-black disabled:cursor-not-allowed disabled:opacity-60"
+        type="submit"
+      >
+        Send
+      </button>
+    </form>
+  </main>
+</Layout>
+
+<script is:inline>
+  const chartId = window.location.pathname.split("/").pop();
+  const token = window.localStorage.getItem("astro_access_token");
+  const statusNode = document.getElementById("status");
+  const thread = document.getElementById("thread");
+  const form = document.getElementById("chat-form");
+  const messageInput = document.getElementById("message");
+  const sendButton = document.getElementById("sendButton");
+
+  let chartData = null;
+  const messages = [];
+
+  function pushMessage(role, content) {
+    const node = document.createElement("article");
+    node.className = "rounded-md border border-white/10 bg-black/20 p-3 text-sm";
+    node.textContent = `${role === "user" ? "You" : "Astro Bot"}: ${content}`;
+    thread.appendChild(node);
+  }
+
+  const authHeaders = {};
+  if (token) {
+    authHeaders.Authorization = `Bearer ${token}`;
+  }
+  statusNode.textContent = token ? "Loading chart context..." : "Auth bypass mode active. Loading chart context...";
+  {
+    Promise.all([
+      fetch(`/api/charts/${chartId}`, {
+        headers: authHeaders,
+      }),
+      fetch(`/api/chat-sessions/${chartId}`, {
+        headers: authHeaders,
+      }),
+    ])
+      .then(async ([chartRes, sessionRes]) => {
+        const chartJson = await chartRes.json();
+        if (!chartRes.ok) throw new Error(chartJson.error ?? "Unable to load chart.");
+        chartData = chartJson.chart.raw_calculation;
+
+        const sessionJson = await sessionRes.json();
+        const existing = sessionJson?.session?.messages ?? [];
+        for (const item of existing) {
+          if (!item?.role || !item?.content) continue;
+          messages.push({ role: item.role, content: item.content });
+          pushMessage(item.role, item.content);
+        }
+        statusNode.textContent = "Chart context loaded. Ask your question.";
+      })
+      .catch((err) => {
+        statusNode.textContent = err instanceof Error ? err.message : "Unexpected error.";
+      });
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!chartData) return;
+
+    const text = messageInput.value.trim();
+    if (!text) return;
+
+    pushMessage("user", text);
+    messages.push({ role: "user", content: text });
+    messageInput.value = "";
+    sendButton.disabled = true;
+
+    const assistantNode = document.createElement("article");
+    assistantNode.className = "rounded-md border border-white/10 bg-black/20 p-3 text-sm";
+    assistantNode.textContent = "Astro Bot: ";
+    thread.appendChild(assistantNode);
+
+    try {
+      const chatHeaders = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        chatHeaders.Authorization = `Bearer ${token}`;
+      }
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: chatHeaders,
+        body: JSON.stringify({
+          chartId,
+          messages,
+          chartData,
+          userName: "User",
+        }),
+      });
+
+      if (!response.ok || !response.body) {
+        const json = await response.json().catch(() => ({}));
+        throw new Error(json.error ?? "Chat failed.");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let assistantText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const chunks = buffer.split("\n\n");
+        buffer = chunks.pop() ?? "";
+        for (const chunk of chunks) {
+          if (!chunk.startsWith("data: ")) continue;
+          const payload = JSON.parse(chunk.slice(6));
+          if (payload.type === "token") {
+            assistantText += payload.token;
+            assistantNode.textContent = `Astro Bot: ${assistantText}`;
+          }
+        }
+      }
+
+      messages.push({ role: "assistant", content: assistantText.trim() });
+    } catch (err) {
+      assistantNode.textContent = `Astro Bot: ${err instanceof Error ? err.message : "Unexpected error."}`;
+    } finally {
+      sendButton.disabled = false;
+    }
+  });
+</script>

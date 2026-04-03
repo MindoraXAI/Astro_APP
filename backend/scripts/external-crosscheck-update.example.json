@@ -1,0 +1,21 @@
+[
+  {
+    "id": "delhi_1990",
+    "source_tool": "AstroSage",
+    "input": {
+      "date": "1990-01-15",
+      "time": "06:30:00",
+      "timezone": "Asia/Kolkata",
+      "latitude": 28.6139,
+      "longitude": 77.209
+    },
+    "expected": {
+      "lagna": "Sagittarius",
+      "moon_sign": "Leo",
+      "sun_sign": "Capricorn",
+      "moon_nakshatra": "Purva Phalguni",
+      "moon_nakshatra_pada": 2,
+      "current_mahadasha": "Rahu"
+    }
+  }
+]

@@ -1,0 +1,136 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="App | Astro Vedic SaaS">
+  <main class="mx-auto max-w-2xl px-6 py-16">
+    <h1 class="text-3xl font-semibold">Generate Your Birth Chart</h1>
+    <p class="mt-3 text-[var(--text)]/80">
+      Enter accurate birth details, then we will compute your chart and generate a personalized reading.
+    </p>
+
+    <p id="auth-state" class="mt-4 rounded-lg border border-white/10 bg-[var(--surface)] p-3 text-sm">
+      Checking authentication...
+    </p>
+
+    <form id="chart-form" class="mt-8 space-y-4 rounded-xl border border-white/10 bg-[var(--surface)] p-5">
+      <label class="block">
+        <span class="mb-1 block text-sm text-[var(--muted)]">Full name</span>
+        <input
+          id="fullName"
+          class="w-full rounded-md border border-white/15 bg-black/20 px-3 py-2"
+          required
+          placeholder="Your full name"
+        />
+      </label>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <label class="block">
+          <span class="mb-1 block text-sm text-[var(--muted)]">Birth date</span>
+          <input id="birthDate" type="date" class="w-full rounded-md border border-white/15 bg-black/20 px-3 py-2" required />
+        </label>
+        <label class="block">
+          <span class="mb-1 block text-sm text-[var(--muted)]">Birth time</span>
+          <input id="birthTime" type="time" class="w-full rounded-md border border-white/15 bg-black/20 px-3 py-2" required />
+        </label>
+      </div>
+
+      <label class="block">
+        <span class="mb-1 block text-sm text-[var(--muted)]">Birth location</span>
+        <input
+          id="birthLocation"
+          class="w-full rounded-md border border-white/15 bg-black/20 px-3 py-2"
+          required
+          placeholder="City, Country"
+        />
+      </label>
+
+      <button
+        id="submitButton"
+        type="submit"
+        class="w-full rounded-md bg-[var(--primary)] px-4 py-2 font-semibold text-black disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        Compute chart and generate reading
+      </button>
+    </form>
+
+    <p id="status" class="mt-4 text-sm text-[var(--text)]/80"></p>
+  </main>
+</Layout>
+
+<script is:inline>
+  const authState = document.getElementById("auth-state");
+  const form = document.getElementById("chart-form");
+  const statusNode = document.getElementById("status");
+  const submitButton = document.getElementById("submitButton");
+
+  const token = window.localStorage.getItem("astro_access_token");
+  authState.textContent = token
+    ? "Authenticated. You can generate a chart."
+    : "Auth bypass mode active. You can generate a chart without login.";
+
+  function setStatus(message) {
+    statusNode.textContent = message;
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    submitButton.disabled = true;
+    setStatus("Computing chart...");
+
+    const input = {
+      fullName: document.getElementById("fullName")?.value ?? "",
+      birthDate: document.getElementById("birthDate")?.value ?? "",
+      birthTime: document.getElementById("birthTime")?.value ?? "",
+      birthLocation: document.getElementById("birthLocation")?.value ?? "",
+    };
+
+    try {
+      const chartHeaders = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        chartHeaders.Authorization = `Bearer ${token}`;
+      }
+      const chartRes = await fetch("/api/calculate", {
+        method: "POST",
+        headers: chartHeaders,
+        body: JSON.stringify({ input }),
+      });
+      const chartJson = await chartRes.json();
+
+      if (!chartRes.ok) {
+        throw new Error(chartJson.error ?? "Chart calculation failed.");
+      }
+
+      setStatus("Generating reading...");
+      const readingHeaders = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        readingHeaders.Authorization = `Bearer ${token}`;
+      }
+      const readingRes = await fetch("/api/generate-reading", {
+        method: "POST",
+        headers: readingHeaders,
+        body: JSON.stringify({
+          chartId: chartJson.chartId,
+          chartData: chartJson.chart,
+          userName: input.fullName,
+        }),
+      });
+      const readingJson = await readingRes.json();
+
+      if (!readingRes.ok) {
+        throw new Error(readingJson.error ?? "Reading generation failed.");
+      }
+
+      setStatus("Done. Redirecting to your chart...");
+      window.location.href = `/app/chart/${chartJson.chartId}`;
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Unexpected error.");
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+</script>

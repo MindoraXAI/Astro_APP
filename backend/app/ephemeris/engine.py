@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple, Optional
 from loguru import logger
 import pytz
+from pytz.exceptions import AmbiguousTimeError, NonExistentTimeError
 
 from app.core.models import (
     BirthData, ChartState, PlanetState, HouseState,
@@ -106,7 +107,16 @@ class EphemerisEngine:
         """Convert birth data to Julian Day (UT) and obliquity."""
         tz = pytz.timezone(birth.timezone)
         local_dt = datetime.strptime(f"{birth.date} {birth.time}", "%Y-%m-%d %H:%M:%S")
-        local_dt = tz.localize(local_dt)
+        try:
+            # Strict localization catches historical DST ambiguity/non-existence.
+            local_dt = tz.localize(local_dt, is_dst=None)
+        except AmbiguousTimeError:
+            # Choose standard-time interpretation deterministically.
+            local_dt = tz.localize(local_dt, is_dst=False)
+        except NonExistentTimeError:
+            # Shift to first valid local time after DST forward jump.
+            shifted = local_dt + timedelta(hours=1)
+            local_dt = tz.localize(shifted, is_dst=True)
         utc_dt = local_dt.astimezone(pytz.utc)
 
         jd = swe.julday(

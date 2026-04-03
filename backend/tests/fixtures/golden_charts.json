@@ -1,0 +1,71 @@
+[
+  {
+    "id": "delhi_1990",
+    "input": {
+      "date": "1990-01-15",
+      "time": "06:30:00",
+      "timezone": "Asia/Kolkata",
+      "latitude": 28.6139,
+      "longitude": 77.209
+    },
+    "expected": {
+      "lagna": "Sagittarius",
+      "moon_sign": "Leo",
+      "sun_sign": "Capricorn",
+      "moon_nakshatra": "Purva Phalguni",
+      "moon_nakshatra_pada": 2,
+      "sun_nakshatra": "Uttara Ashadha",
+      "current_mahadasha": "Rahu",
+      "current_antardasha": "Rahu",
+      "house_1_sign": "Sagittarius",
+      "house_7_sign": "Gemini"
+    },
+    "external_source": "Pending manual validation against AstroSage/Jagannatha Hora"
+  },
+  {
+    "id": "nyc_1984",
+    "input": {
+      "date": "1984-06-28",
+      "time": "19:30:00",
+      "timezone": "America/New_York",
+      "latitude": 40.7128,
+      "longitude": -74.006
+    },
+    "expected": {
+      "lagna": "Sagittarius",
+      "moon_sign": "Gemini",
+      "sun_sign": "Gemini",
+      "moon_nakshatra": "Ardra",
+      "moon_nakshatra_pada": 2,
+      "sun_nakshatra": "Ardra",
+      "current_mahadasha": "Saturn",
+      "current_antardasha": "Rahu",
+      "house_1_sign": "Sagittarius",
+      "house_7_sign": "Gemini"
+    },
+    "external_source": "Pending manual validation against AstroSage/Jagannatha Hora"
+  },
+  {
+    "id": "london_1995",
+    "input": {
+      "date": "1995-12-05",
+      "time": "14:20:00",
+      "timezone": "Europe/London",
+      "latitude": 51.5074,
+      "longitude": -0.1278
+    },
+    "expected": {
+      "lagna": "Aries",
+      "moon_sign": "Taurus",
+      "sun_sign": "Scorpio",
+      "moon_nakshatra": "Krittika",
+      "moon_nakshatra_pada": 2,
+      "sun_nakshatra": "Jyeshtha",
+      "current_mahadasha": "Rahu",
+      "current_antardasha": "Mercury",
+      "house_1_sign": "Aries",
+      "house_7_sign": "Libra"
+    },
+    "external_source": "Pending manual validation against AstroSage/Jagannatha Hora"
+  }
+]

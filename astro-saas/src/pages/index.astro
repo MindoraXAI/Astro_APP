@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Astro Vedic SaaS">
+	<main class="mx-auto max-w-5xl px-6 py-16">
+		<p class="text-sm uppercase tracking-[0.2em] text-[var(--muted)]">Execution started</p>
+		<h1 class="mt-4 text-4xl font-semibold leading-tight md:text-5xl">
+			Astro Vedic SaaS rebuild is now in progress.
+		</h1>
+		<p class="mt-6 max-w-3xl text-lg text-[var(--text)]/80">
+			This new Astro application is the active migration target. Phase 1 and 2 foundations are in place
+			with SSR, typed API contracts, and Supabase schema migration.
+		</p>
+
+		<div class="mt-10 grid gap-4 md:grid-cols-2">
+			<a class="rounded-xl border border-white/10 bg-[var(--surface)] p-5 hover:border-[var(--primary)]" href="/app">
+				Start app flow
+			</a>
+			<a
+				class="rounded-xl border border-white/10 bg-[var(--surface)] p-5 hover:border-[var(--secondary)]"
+				href="/pricing"
+			>
+				View plans
+			</a>
+		</div>
+	</main>
+</Layout>

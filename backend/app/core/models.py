@@ -303,3 +303,5 @@ class LocationResolutionResponse(BaseModel):
     longitude: float
     timezone: str
     display_name: str
+    confidence: Optional[float] = None
+    candidates_count: Optional[int] = None
